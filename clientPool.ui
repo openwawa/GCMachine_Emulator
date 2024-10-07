@@ -35,7 +35,7 @@
     <property name="title">
      <string>参数配置</string>
     </property>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pushButton_saveConfig">
      <property name="geometry">
       <rect>
        <x>490</x>
@@ -74,23 +74,23 @@
       <string>通信模式：</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_3">
+    <widget class="QLineEdit" name="lineEdit_devNum">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>240</x>
        <y>20</y>
-       <width>61</width>
+       <width>51</width>
        <height>21</height>
       </rect>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="comboBox_comm_model">
      <property name="geometry">
       <rect>
        <x>80</x>
        <y>20</y>
-       <width>111</width>
-       <height>22</height>
+       <width>81</width>
+       <height>21</height>
       </rect>
      </property>
      <item>
@@ -107,7 +107,7 @@
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>170</x>
        <y>20</y>
        <width>72</width>
        <height>21</height>
@@ -120,22 +120,22 @@
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>350</x>
+       <x>300</x>
        <y>20</y>
-       <width>61</width>
+       <width>91</width>
        <height>21</height>
       </rect>
      </property>
      <property name="text">
-      <string>设备名：</string>
+      <string>设备名前缀：</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_4">
+    <widget class="QLineEdit" name="lineEdit_startDevId">
      <property name="geometry">
       <rect>
-       <x>410</x>
+       <x>390</x>
        <y>20</y>
-       <width>61</width>
+       <width>91</width>
        <height>21</height>
       </rect>
      </property>
@@ -165,7 +165,7 @@
        <string>IP:</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit">
+     <widget class="QLineEdit" name="lineEdit_serverIP">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -188,7 +188,7 @@
        <string>端口：</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_2">
+     <widget class="QLineEdit" name="lineEdit_serverPort">
       <property name="geometry">
        <rect>
         <x>280</x>
@@ -237,7 +237,7 @@
        <string>自身地址：</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_6">
+     <widget class="QLineEdit" name="lineEdit_Addr">
       <property name="geometry">
        <rect>
         <x>280</x>
@@ -260,7 +260,7 @@
        <string>信道：</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_7">
+     <widget class="QLineEdit" name="lineEdit_channel">
       <property name="geometry">
        <rect>
         <x>390</x>
@@ -270,7 +270,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_10">
+     <widget class="QLineEdit" name="lineEdit_BaudRate">
       <property name="geometry">
        <rect>
         <x>80</x>
@@ -281,7 +281,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="pushButton_loraDebug">
      <property name="geometry">
       <rect>
        <x>490</x>
@@ -298,9 +298,9 @@
    <widget class="QGroupBox" name="groupBox_5">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>340</x>
       <y>350</y>
-      <width>351</width>
+      <width>251</width>
       <height>191</height>
      </rect>
     </property>
@@ -310,7 +310,7 @@
     <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>10</x>
        <y>20</y>
        <width>72</width>
        <height>21</height>
@@ -320,12 +320,12 @@
       <string>异常状态：</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_3">
+    <widget class="QComboBox" name="comboBox_condition">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>80</x>
        <y>20</y>
-       <width>111</width>
+       <width>91</width>
        <height>25</height>
       </rect>
      </property>
@@ -345,10 +345,10 @@
       </property>
      </item>
     </widget>
-    <widget class="QPushButton" name="pushButton_7">
+    <widget class="QPushButton" name="pushButton_send">
      <property name="geometry">
       <rect>
-       <x>270</x>
+       <x>180</x>
        <y>20</y>
        <width>61</width>
        <height>28</height>
@@ -361,10 +361,10 @@
     <widget class="QGroupBox" name="groupBox_7">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>60</y>
-       <width>321</width>
-       <height>121</height>
+       <x>10</x>
+       <y>50</y>
+       <width>231</width>
+       <height>131</height>
       </rect>
      </property>
      <property name="title">
@@ -383,12 +383,12 @@
        <string>睡眠时间：</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_5">
+     <widget class="QLineEdit" name="lineEdit_sleepTime">
       <property name="geometry">
        <rect>
         <x>80</x>
         <y>30</y>
-        <width>91</width>
+        <width>51</width>
         <height>21</height>
        </rect>
       </property>
@@ -409,12 +409,12 @@
        <string>收集时间：</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_8">
+     <widget class="QLineEdit" name="lineEdit_collectTime">
       <property name="geometry">
        <rect>
         <x>80</x>
         <y>60</y>
-        <width>91</width>
+        <width>51</width>
         <height>21</height>
        </rect>
       </property>
@@ -435,12 +435,12 @@
        <string>割胶时间：</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_9">
+     <widget class="QLineEdit" name="lineEdit_waitTime">
       <property name="geometry">
        <rect>
         <x>80</x>
         <y>90</y>
-        <width>91</width>
+        <width>51</width>
         <height>21</height>
        </rect>
       </property>
@@ -448,12 +448,12 @@
        <string>10</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="pushButton_status">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>80</y>
-        <width>93</width>
+        <x>150</x>
+        <y>60</y>
+        <width>71</width>
         <height>28</height>
        </rect>
       </property>
@@ -461,12 +461,12 @@
        <string>获取状态</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_5">
+     <widget class="QPushButton" name="pushButton_resetParam">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>150</x>
         <y>30</y>
-        <width>93</width>
+        <width>71</width>
         <height>28</height>
        </rect>
       </property>
@@ -481,19 +481,19 @@
      <rect>
       <x>10</x>
       <y>190</y>
-      <width>221</width>
+      <width>321</width>
       <height>351</height>
      </rect>
     </property>
     <property name="title">
      <string>输出日志</string>
     </property>
-    <widget class="QTextEdit" name="textEdit">
+    <widget class="QTextEdit" name="textEdit_log">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>201</width>
+       <width>301</width>
        <height>321</height>
       </rect>
      </property>
@@ -505,21 +505,21 @@
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>340</x>
       <y>190</y>
-      <width>351</width>
+      <width>251</width>
       <height>151</height>
      </rect>
     </property>
     <property name="title">
      <string>设备列表</string>
     </property>
-    <widget class="QListWidget" name="listWidget">
+    <widget class="QListWidget" name="listWidget_dev">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>331</width>
+       <width>231</width>
        <height>121</height>
       </rect>
      </property>

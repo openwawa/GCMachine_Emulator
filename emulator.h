@@ -5,6 +5,8 @@
 #include <QSplitter>
 #include "clientpool.h"
 #include "gatewaydevice.h"
+#include "configInfo.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Emulator; }
@@ -23,5 +25,8 @@ private:
     clientPool *clientWindow;
     GateWayDevice *gwDevWindow;
     QSplitter *splitter;
+
+    ConfigInfo *configInfo;         //配置信息
+
 };
 #endif // EMULATOR_H
