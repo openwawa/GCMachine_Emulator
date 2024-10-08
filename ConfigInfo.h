@@ -19,6 +19,10 @@ public:
       settings->setValue("mqtt_brud_rate", configData[MQTT_BRUD_RATE]);
       settings->setValue("lora_addr", configData[LORA_ADDR]);
       settings->setValue("lora_channel", configData[LORA_CHANNEL]);
+      settings->setValue("gateway_id", configData[GATEWAY_ID]);
+      settings->setValue("c_pub_key", configData[C_PUB_KEY]);
+      settings->setValue("c_pri_key", configData[C_PRI_KEY]);
+
       return 0;
   }
   int write_gateWayConfigFile(void){
@@ -36,10 +40,13 @@ public:
                 <<settings->value("serverPort").toString()
                 <<settings->value("startDevID").toString()
                 <<settings->value("devNum").toString()
-                <<settings->value("c_com_model").toString()
+                <<settings->value("c_comm_model").toString()
                 <<settings->value("mqtt_brud_rate").toString()
                 <<settings->value("lora_addr").toString()
-                <<settings->value("lora_channel").toString();
+                <<settings->value("lora_channel").toString()
+                <<settings->value("gateway_id").toString()
+                <<settings->value("c_pub_key").toString()
+                <<settings->value("c_pri_key").toString();       //这里的顺序要和write一致
 
       return 0;
   }

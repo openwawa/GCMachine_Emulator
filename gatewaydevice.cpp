@@ -17,6 +17,7 @@ GateWayDevice::GateWayDevice(ConfigInfo &config,QWidget *parent) :
 GateWayDevice::~GateWayDevice()
 {
     delete ui;
+    delete logger;
 }
 
 int GateWayDevice::init_configInfo()
@@ -44,6 +45,6 @@ int GateWayDevice::save_configInfo()
     configInfo.set_configData(MQTT_PASSWD,ui->lineEdit_passwd->text());
 
     configInfo.write_gateWayConfigFile();
-    logger->log("成功保存配置信息"+configInfo.get_configFileName());
+    logger->log("成功保存配置信息在："+configInfo.get_configFileName());
     return 0;
 }
