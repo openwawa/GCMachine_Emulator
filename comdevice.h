@@ -2,11 +2,21 @@
 #define COMDEVICE_H
 
 #include <QObject>
+#include <QDataStream>
 #include "global.h"
 typedef struct { //产品公私钥对
     unsigned char pubkey[11];
     unsigned char prikey[11];
 }KeyPair;
+struct ParsedPacket
+{
+    quint8 messageId;
+    QByteArray gatewayId;
+    QByteArray nodeId;
+    QByteArray nodeProductKey;
+    quint8 messageBodyLength;
+    QByteArray messageBody;
+};
 
 class ComDevice: public QObject
 {
@@ -46,6 +56,36 @@ public:
         package.append(msg);
         return package;
     }
+    ParsedPacket parsePacket(const QByteArray &packet)
+    {
+        ParsedPacket parsedPacket;
+        QDataStream stream(packet);
+
+        // 读取消息 ID (1 字节)
+        stream >> parsedPacket.messageId;
+
+        // 读取网关 ID (12 字节)
+        parsedPacket.gatewayId = packet.mid(stream.device()->pos(), 12);
+        stream.skipRawData(12);
+
+        // 读取节点 ID (14 字节)
+        parsedPacket.nodeId = packet.mid(stream.device()->pos(), 14);
+        stream.skipRawData(14);
+
+        // 读取节点产品密钥 (11 字节)
+        parsedPacket.nodeProductKey = packet.mid(stream.device()->pos(), 11);
+        stream.skipRawData(11);
+
+        // 读取消息体长度 (1 字节)
+        stream >> parsedPacket.messageBodyLength;
+
+        // 读取消息体 (长度由 messageBodyLength 指定)
+        parsedPacket.messageBody = packet.mid(stream.device()->pos(), parsedPacket.messageBodyLength);
+        stream.skipRawData(parsedPacket.messageBodyLength);
+
+        return parsedPacket;
+    }
+
 };
 
 #endif // COMDEVICE_H

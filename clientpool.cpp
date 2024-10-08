@@ -110,10 +110,20 @@ int clientPool::init_devPool()
                     .arg(i+1, 5, 10, QLatin1Char('0'));  // 确保设备编码是五位数，不足补零
         devPool.append(new ClientDev(deviceName,i,gateWayID,this));
         connect(devPool[i],&ClientDev::sig_log,this,&clientPool::handle_got_log);       //打印日志对接
-
+        connect(devPool[i],&ClientDev::sig_connect_server_failed,this,&clientPool::handle_connect_server_failed);
+        connect(devPool[i],&ClientDev::sig_connect_server_successd,this,&clientPool::handle_connect_server_success);
     }
 
     return 0;
+}
+
+int clientPool::init_tcpConnect()
+{
+    QString ip=configInfo.get_configData(SERVER_IP);
+    QString port=configInfo.get_configData(SERVER_PORT);
+    for(auto dev:devPool){
+        dev->connect_tcpServer(ip,port);
+    }
 }
 
 ClientDev *clientPool::getDev(int index)
@@ -136,7 +146,7 @@ ClientDev *clientPool::getDev(int index)
 void clientPool::start_simul()
 {
     logger->log("正在开启仿真.....");
-    isRunning=true;
+
     ui->pushButton_start->setText("停止仿真");
     logger->log("正在初始化仿真设备池.....");
     init_devPool();
@@ -144,7 +154,14 @@ void clientPool::start_simul()
     logger->log("正在初始化设备列表....");
     init_devList();
     logger->log("设备列表初始化成功");
-    logger->log("客户端仿真器初始化完成！正在运行.....");
+    if(configInfo.get_configData(C_COMM_MODEL).toUInt()==0){
+        logger->log("设备正在连接TCP服务器.....");
+        init_tcpConnect();
+    }
+    else{//LORA 模式
+        isRunning=true;
+        logger->log("客户端仿真器初始化完成！正在运行.....");
+    }
 }
 
 void clientPool::stop_simul()
@@ -239,4 +256,27 @@ void clientPool::handle_clickGetDevStatus()
         return;
     }
     logger->log(dev->getStatus());
+}
+
+void clientPool::handle_connect_server_success(int index)
+{
+    static int connectedNum=0;
+    connectedNum++;
+    if(connectedNum==devPool.size()){
+        connectedNum=0;
+        logger->log("所有设备套接字连接tcp服务端成功！");
+        isRunning=true;
+    }
+}
+
+void clientPool::handle_connect_server_failed(int index)
+{
+    static int num;
+    num++;  //这里需要修改，似乎会多次触发
+    if(num==devPool.size())
+    {
+        num=0;
+        //连接不上服务器，终止仿真
+        stop_simul();
+    }
 }

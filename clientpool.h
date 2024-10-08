@@ -37,6 +37,7 @@ private:
     int save_configInfo(void);
     int init_devList(void);
     int init_devPool();
+    int init_tcpConnect(void);
     ClientDev* getDev(int index);
 public:
     void start_simul(void);
@@ -50,6 +51,9 @@ private slots:
    void handle_clickStartBtn(void);
    void handle_clickSetParam(void);
    void handle_clickGetDevStatus(void);
+
+   void handle_connect_server_success(int index);
+   void handle_connect_server_failed(int index);
 
 };
 
