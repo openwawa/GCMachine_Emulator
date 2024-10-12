@@ -558,19 +558,6 @@
        <string>10</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_setParam">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>110</y>
-        <width>81</width>
-        <height>28</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>修改参数</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_16">
       <property name="geometry">
        <rect>
@@ -652,9 +639,9 @@
     <widget class="QPushButton" name="pushButton_status">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>90</x>
        <y>290</y>
-       <width>91</width>
+       <width>71</width>
        <height>28</height>
       </rect>
      </property>
@@ -665,9 +652,9 @@
     <widget class="QPushButton" name="pushButton_devStart">
      <property name="geometry">
       <rect>
-       <x>140</x>
+       <x>10</x>
        <y>290</y>
-       <width>91</width>
+       <width>71</width>
        <height>28</height>
       </rect>
      </property>
@@ -699,7 +686,7 @@
      </property>
      <item>
       <property name="text">
-       <string>经纬度信息</string>
+       <string>心跳包</string>
       </property>
      </item>
      <item>
@@ -709,12 +696,12 @@
      </item>
      <item>
       <property name="text">
-       <string>运行状态</string>
+       <string>经纬度信息</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>心跳包</string>
+       <string>运行状态</string>
       </property>
      </item>
      <item>
@@ -734,6 +721,19 @@
      </property>
      <property name="text">
       <string>上报</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_setParam">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>290</y>
+       <width>71</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>修改参数</string>
      </property>
     </widget>
    </widget>

@@ -98,6 +98,7 @@ private:
      void sendGetScheduledTimeRequest();
      void sendMakeSureTask();           //发送指令确保任务是最新的
      void startCuttingTask();
+     void handleGetScheduleFristTime(QString& mesg); //处理第一次获取指令
 
 
 private slots:
@@ -105,8 +106,9 @@ private slots:
     void onWaittingTimerTimeout();
     void onCollectTimerTimeout();
     void onCutTimerTimeout();
-    void handleIncomingMessage();
-    void handleGetNewTask(QString& mesg);
+    void handleIncomingMessageByTcp();
+    void handleIncomingMessageByLora();
+    void handleGetNewScheduleMsg(QString& mesg);
 
 signals:
     void sig_log(QString &devID,QString mesg);

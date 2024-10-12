@@ -20,9 +20,9 @@ ClientDev::ClientDev(QString name,int index,QString &gatewayID,QObject *parent):
 
     connect(sleepTimer, &QTimer::timeout, this, &ClientDev::onSleepTimerTimeout);
     connect(cutTimer, &QTimer::timeout, this, &ClientDev::onCutTimerTimeout);
-    connect(collectTimer, &QTimer::timeout, this, &ClientDev::onCutTimerTimeout);
+    connect(collectTimer, &QTimer::timeout, this, &ClientDev::onCollectTimerTimeout);
     connect(waitScheduleTimer, &QTimer::timeout, this, &ClientDev::onWaittingTimerTimeout);
-    connect(this, &ClientDev::sig_getNewTask, this, &ClientDev::handleGetNewTask);
+    connect(this, &ClientDev::sig_getNewTask, this, &ClientDev::handleGetNewScheduleMsg);
 
 
 }
@@ -34,6 +34,7 @@ ClientDev::~ClientDev()
     delete collectTimer;
     delete waitScheduleTimer;
     delete socket;
+    //socket->deleteLater();
 }
 
 void ClientDev::setDevParam(DevParam &param)
@@ -79,15 +80,16 @@ void ClientDev::connect_tcpServer(QString serverIP,QString port)
 {
     socket = new QTcpSocket();
     connect(socket, &QTcpSocket::connected, this,[=]() {        //发送日志信息
-        emit(sig_connect_server_successd(devIndex));
         emit(sig_log(this->devID,"成功连上服务器！"));
+        emit(sig_connect_server_successd(devIndex));
 
     });
     connect(socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error), this, [=](QAbstractSocket::SocketError error) {
-        emit(sig_connect_server_failed(devIndex));
         emit(sig_log(this->devID,"连接服务器失败，原因："+socket->errorString()));
+        //报告日志放前面，不然dev会提前析构
+        emit(sig_connect_server_failed(devIndex));
     });
-    connect(socket, &QTcpSocket::readyRead, this, &ClientDev::handleIncomingMessage);
+    connect(socket, &QTcpSocket::readyRead, this, &ClientDev::handleIncomingMessageByTcp);
     socket->connectToHost(serverIP, port.toInt()); // 服务器地址和端口号
 
 }
@@ -133,9 +135,26 @@ void ClientDev::startCuttingTask()
 {
     waitStatus=DEV_WAIT_CUTTING;
     isWorking=true;
+    emit(sig_log(devID,"已确认割胶指令，开启割胶任务"));
     cutTimer->start(devParam.cuttingTime*1000);
     waitScheduleTimer->stop();
     task.reset();       //重置任务
+}
+
+void ClientDev::handleGetScheduleFristTime(QString& mesg)
+{
+    emit(sig_log(devID,"接受到割胶指令时间表"));
+    task.reLoad(mesg);
+    int sec=task.waitTime();
+    if(sec<=0){  //已预期，直接开始/这里可能对应第二次确认，当同样的任务第二次发送，自然是已经逾期了，所以直接运行割胶动作
+       startCuttingTask();
+       return ;
+    }
+#if(DEBUG_MODE==1)
+    sec=10;     //用于调试，都等待10S
+#endif
+    waitStatus=DEV_WAIT_CUTTING_START;
+    waitScheduleTimer->start(sec*1000);
 }
 
 void ClientDev::onSleepTimerTimeout()
@@ -182,13 +201,13 @@ void ClientDev::onCutTimerTimeout()
     emit(sig_log(devID,"割胶任务完成，重新进入睡眠状态"));
 }
 
-void ClientDev::handleIncomingMessage()
+void ClientDev::handleIncomingMessageByTcp()
 {
     //解析接受的字符串
 
-     QByteArray buff;
+    QByteArray buff;
     while (socket->bytesAvailable() > 0) {
-        auto data=socket->readAll();        //这里应该用缓冲区优化，待修改
+        auto data=socket->readAll();        //TODO:这里应该用缓冲区优化，待修改
         buff.append(data);
     }
      qDebug() <<"Received data from socket:" << buff;
@@ -201,34 +220,30 @@ void ClientDev::handleIncomingMessage()
             emit(sig_getNewTask(msg));
         }
     }
-
 }
 
-void ClientDev::handleGetNewTask(QString& mesg)
+void ClientDev::handleIncomingMessageByLora()
+{
+    //TODO:从串口读取数据，并进行处理
+}
+
+void ClientDev::handleGetNewScheduleMsg(QString& mesg)
 {
     mesg.remove(0,1);
-    if(task.getStatus()==1){
+    if(task.getStatus()==1){    //处理接受到确认时间表消息
         CuttingTask task;
         task.reLoad(mesg);
         int s=task.waitTime();
 #if(DEBUG_MODE==1)          //调试模式下，默认收到就是确认
     s=0;
 #endif
-        if(s<=0){
+        if(s<=0){       //若接受的第二次确认指令与上次的一致，那么时间差就会小于0
             startCuttingTask();
             return ;
         }
+        emit(sig_log(devID,"接受到的确认割胶指令时间表得到变更"));
     }
     //若第二次收到的任务时间超出当前时间，那么视为当前得到的任务为新任务
-    task.reLoad(mesg);
-    int sec=task.waitTime();
-    if(sec<=0){  //已预期，直接开始/这里可能对应第二次确认，当同样的任务第二次发送，自然是已经逾期了，所以直接运行割胶动作
-       startCuttingTask();
-       return ;
-    }
-#if(DEBUG_MODE==1)
-    sec=10;     //用于调试，都等待10S
-#endif
-    waitStatus=DEV_WAIT_CUTTING_START;
-    waitScheduleTimer->start(sec*1000);
+    handleGetScheduleFristTime(mesg);
+
 }
