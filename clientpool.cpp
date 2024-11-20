@@ -210,6 +210,7 @@ void clientPool::handle_devListIndex_changed()
     ui->lineEdit_sleepTime->setText(QString::number(para.sleepTime));
     ui->lineEdit_collectTime->setText(QString::number(para.collectTime));
     ui->lineEdit_waitTime->setText(QString::number(para.cuttingTime));
+    ui->lineEdit_glueWeight->setText(QString::number(para.glueWeight));
 }
 
 void clientPool::handle_clickStartBtn()
@@ -243,6 +244,11 @@ void clientPool::handle_clickSetParam()
     para.cuttingTime=ui->lineEdit_waitTime->text().toUInt(&ret);
     if(!ret){
         logger->log("割胶时间的输入为正整数，单位为秒！",ERR);
+        return;
+    }
+    para.glueWeight=ui->lineEdit_glueWeight->text().toUInt(&ret);
+    if(!ret){
+        logger->log("乳胶重量的输入为正整数，单位为kg！",ERR);
         return;
     }
     dev->setDevParam(para);

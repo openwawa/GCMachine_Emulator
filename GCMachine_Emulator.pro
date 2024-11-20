@@ -19,6 +19,7 @@ QT+=network
 SOURCES += \
     clientdev.cpp \
     clientpool.cpp \
+    commhandle.cpp \
     gatewaydev.cpp \
     gatewaydevice.cpp \
     main.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     clientdev.h \
     clientpool.h \
     comdevice.h \
+    commhandle.h \
     configInfo.h \
     emulator.h \
     gatewaydev.h \

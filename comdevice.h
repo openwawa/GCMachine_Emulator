@@ -61,6 +61,10 @@ public:
         ParsedPacket parsedPacket;
         QDataStream stream(packet);
 
+        if(packet.size()<1+12+14+11+1){
+            return parsedPacket;
+        }
+        //
         // 读取消息 ID (1 字节)
         stream >> parsedPacket.messageId;
 

@@ -20,9 +20,6 @@ public:
     explicit clientPool(ConfigInfo &config,QWidget *parent = nullptr);
     ~clientPool();
 
-
-
-
 private:
     Ui::clientPool *ui;
     ConfigInfo &configInfo;

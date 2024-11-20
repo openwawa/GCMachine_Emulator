@@ -9,6 +9,7 @@ typedef struct{
     int sleepTime;         //睡眠时间
     int collectTime;       //割胶收集时间
     int cuttingTime;       //割胶时间
+    int glueWeight;        //乳胶重量
 }DevParam;
 class CuttingTask {
     QDateTime startTime;
@@ -108,7 +109,8 @@ private slots:
     void onCutTimerTimeout();
     void handleIncomingMessageByTcp();
     void handleIncomingMessageByLora();
-    void handleGetNewScheduleMsg(QString& mesg);
+    void handleGetNewTask(QString& mesg);
+    void handleIncomingMessage();
 
 signals:
     void sig_log(QString &devID,QString mesg);
